@@ -474,3 +474,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 })
+
+// Continuous Suppliers Carousel - No manual controls needed
+// The carousel runs automatically via CSS animation
