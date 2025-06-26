@@ -12,35 +12,60 @@ function scrollToSection(sectionId) {
 
 // Mobile menu toggle
 document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.querySelector(".hamburger")
-  const navMenu = document.querySelector(".nav-menu")
-  const navLinks = document.querySelectorAll(".nav-link")
+  const navbarBurger = document.querySelector(".navbar-burger")
+  const navbarMenu = document.querySelector(".navbar-menu")
+  const navbarItems = document.querySelectorAll(".navbar-item")
 
   // Toggle mobile menu
-  hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("active")
-    navMenu.classList.toggle("active")
-  })
+  if (navbarBurger) {
+    navbarBurger.addEventListener("click", () => {
+      navbarBurger.classList.toggle("active")
+      navbarMenu.classList.toggle("active")
+    })
+  }
 
   // Close mobile menu when clicking on a link
-  navLinks.forEach((link) => {
+  navbarItems.forEach((link) => {
     link.addEventListener("click", () => {
-      hamburger.classList.remove("active")
-      navMenu.classList.remove("active")
+      if (navbarBurger) {
+        navbarBurger.classList.remove("active")
+        navbarMenu.classList.remove("active")
+      }
     })
   })
 
   // Smooth scrolling for navigation links
-  navLinks.forEach((link) => {
+  navbarItems.forEach((link) => {
     link.addEventListener("click", function (e) {
       e.preventDefault()
       const targetId = this.getAttribute("href").substring(1)
+
+      // Remove active class from all links
+      navbarItems.forEach(l => l.classList.remove("active"))
+      // Add active class to clicked link
+      this.classList.add("active")
+
       scrollToSection(targetId)
     })
   })
+
+  // Update mobile menu styles for white navbar
+  const style = document.createElement("style")
+  style.textContent = `
+    @media (max-width: 768px) {
+      .nav-menu {
+        background-color: rgba(255, 255, 255, 0.98) !important;
+        box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+      }
+      .nav-link {
+        color: #8b4513 !important;
+      }
+    }
+  `
+  document.head.appendChild(style)
 })
 
-// Navbar scroll effect
+// Navbar scroll effect and active section highlighting
 window.addEventListener("scroll", () => {
   const navbar = document.getElementById("navbar")
   if (window.scrollY > 50) {
@@ -48,6 +73,72 @@ window.addEventListener("scroll", () => {
   } else {
     navbar.classList.remove("scrolled")
   }
+
+  // Update active navigation link based on scroll position
+  updateActiveNavLink()
+})
+
+// Function to update active navigation link
+function updateActiveNavLink() {
+  const sections = document.querySelectorAll("section[id]")
+  const navbarItems = document.querySelectorAll(".navbar-item")
+
+  let currentSection = ""
+
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 120
+    const sectionHeight = section.offsetHeight
+
+    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+      currentSection = section.getAttribute("id")
+    }
+  })
+
+  // Map sections to navbar items
+  const sectionMap = {
+    'hero': 'hero',
+    'about': 'about',
+    'stats': 'about',
+    'leadership': 'about',
+    'products': 'products',
+    'manufacturing': 'products',
+    'clients': 'products',
+    'sustainability': 'products',
+    'contact': 'contact'
+  }
+
+  const mappedSection = sectionMap[currentSection] || currentSection
+
+  navbarItems.forEach(link => {
+    link.classList.remove("active")
+    if (link.getAttribute("href") === `#${mappedSection}`) {
+      link.classList.add("active")
+    }
+  })
+}
+
+// Active section highlighting
+window.addEventListener("scroll", () => {
+  const sections = document.querySelectorAll("section[id]")
+  const navLinks = document.querySelectorAll(".nav-link")
+
+  let current = ""
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop - 100
+    const sectionHeight = section.clientHeight
+
+    if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+      current = section.getAttribute("id")
+    }
+  })
+
+  navLinks.forEach((link) => {
+    link.classList.remove("active")
+    if (link.getAttribute("href") === `#${current}`) {
+      link.classList.add("active")
+    }
+  })
 })
 
 // Intersection Observer for scroll animations
@@ -76,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ".contact-item",
     ".team-member",
     ".about-item",
+    ".hero-image-item",
   ]
 
   animateElements.forEach((selector) => {
@@ -88,19 +180,21 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 })
 
-// Parallax effect for hero section
-window.addEventListener("scroll", () => {
-  const scrolled = window.pageYOffset
-  const hero = document.querySelector(".hero")
-  if (hero) {
-    const rate = scrolled * -0.5
-    hero.style.transform = `translateY(${rate}px)`
-  }
-})
+// Parallax effect removed for new hero layout
+// window.addEventListener("scroll", () => {
+//   const scrolled = window.pageYOffset
+//   const hero = document.querySelector(".hero")
+//   if (hero) {
+//     const rate = scrolled * -0.5
+//     hero.style.transform = `translateY(${rate}px)`
+//   }
+// })
 
 // Enhanced hover effects and interactions
 document.addEventListener("DOMContentLoaded", () => {
-  const cards = document.querySelectorAll(".service-card, .product-card, .client-item, .market-item, .manufacturing-item")
+  const cards = document.querySelectorAll(
+    ".service-card, .product-card, .client-item, .market-item, .manufacturing-item",
+  )
 
   cards.forEach((card) => {
     card.addEventListener("mouseenter", function () {
@@ -119,10 +213,10 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   // Add parallax effect to images
-  const images = document.querySelectorAll('.service-image img, .product-image img, .manufacturing-image img')
+  const images = document.querySelectorAll(".service-image img, .product-image img, .manufacturing-image img")
 
-  images.forEach(img => {
-    img.addEventListener('mousemove', function(e) {
+  images.forEach((img) => {
+    img.addEventListener("mousemove", function (e) {
       const rect = this.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
@@ -134,8 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
       this.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
     })
 
-    img.addEventListener('mouseleave', function() {
-      this.style.transform = 'scale(1.1)'
+    img.addEventListener("mouseleave", function () {
+      this.style.transform = "scale(1.1)"
     })
   })
 })
@@ -188,20 +282,11 @@ function typeWriter(element, text, speed = 100) {
   type()
 }
 
-// Initialize typing effect (uncomment to enable)
-// document.addEventListener('DOMContentLoaded', function() {
-//     const heroTitle = document.querySelector('.hero-title');
-//     if (heroTitle) {
-//         const originalText = heroTitle.textContent;
-//         typeWriter(heroTitle, originalText, 80);
-//     }
-// });
-
 // Enhanced counter animation for statistics
 function animateCounter(element, target, duration = 2000) {
   let start = 0
   const increment = target / (duration / 16)
-  const suffix = element.dataset.suffix || ''
+  const suffix = element.dataset.suffix || ""
 
   function updateCounter() {
     start += increment
@@ -217,20 +302,23 @@ function animateCounter(element, target, duration = 2000) {
 }
 
 // Initialize counter animations when stats section comes into view
-document.addEventListener('DOMContentLoaded', () => {
-  const statNumbers = document.querySelectorAll('.stat-number')
+document.addEventListener("DOMContentLoaded", () => {
+  const statNumbers = document.querySelectorAll(".stat-number")
 
-  const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-        const target = parseInt(entry.target.dataset.target)
-        animateCounter(entry.target, target, 2000)
-        entry.target.classList.add('animated')
-      }
-    })
-  }, { threshold: 0.5 })
+  const statsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !entry.target.classList.contains("animated")) {
+          const target = Number.parseInt(entry.target.dataset.target)
+          animateCounter(entry.target, target, 2000)
+          entry.target.classList.add("animated")
+        }
+      })
+    },
+    { threshold: 0.5 },
+  )
 
-  statNumbers.forEach(stat => {
+  statNumbers.forEach((stat) => {
     statsObserver.observe(stat)
   })
 })
@@ -275,8 +363,8 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 // Add floating leather particles animation
-document.addEventListener('DOMContentLoaded', () => {
-  const hero = document.querySelector('.hero')
+document.addEventListener("DOMContentLoaded", () => {
+  const hero = document.querySelector(".hero")
   if (hero) {
     for (let i = 0; i < 15; i++) {
       createFloatingParticle(hero)
@@ -285,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function createFloatingParticle(container) {
-  const particle = document.createElement('div')
+  const particle = document.createElement("div")
   particle.style.cssText = `
     position: absolute;
     width: ${Math.random() * 8 + 4}px;
@@ -297,8 +385,8 @@ function createFloatingParticle(container) {
   `
 
   // Random starting position
-  particle.style.left = Math.random() * 100 + '%'
-  particle.style.top = Math.random() * 100 + '%'
+  particle.style.left = Math.random() * 100 + "%"
+  particle.style.top = Math.random() * 100 + "%"
 
   container.appendChild(particle)
 
@@ -308,158 +396,72 @@ function createFloatingParticle(container) {
 
 function animateParticle(particle) {
   const duration = Math.random() * 20000 + 15000 // 15-35 seconds
-  const startX = parseFloat(particle.style.left)
-  const startY = parseFloat(particle.style.top)
+  const startX = Number.parseFloat(particle.style.left)
+  const startY = Number.parseFloat(particle.style.top)
   const endX = Math.random() * 100
   const endY = Math.random() * 100
 
-  particle.animate([
+  particle.animate(
+    [
+      {
+        left: startX + "%",
+        top: startY + "%",
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+        offset: 0.1,
+      },
+      {
+        opacity: 1,
+        offset: 0.9,
+      },
+      {
+        left: endX + "%",
+        top: endY + "%",
+        opacity: 0,
+      },
+    ],
     {
-      left: startX + '%',
-      top: startY + '%',
-      opacity: 0
+      duration: duration,
+      easing: "ease-in-out",
     },
-    {
-      opacity: 1,
-      offset: 0.1
-    },
-    {
-      opacity: 1,
-      offset: 0.9
-    },
-    {
-      left: endX + '%',
-      top: endY + '%',
-      opacity: 0
-    }
-  ], {
-    duration: duration,
-    easing: 'ease-in-out'
-  }).onfinish = () => {
+  ).onfinish = () => {
     // Restart animation
-    particle.style.left = Math.random() * 100 + '%'
-    particle.style.top = Math.random() * 100 + '%'
+    particle.style.left = Math.random() * 100 + "%"
+    particle.style.top = Math.random() * 100 + "%"
     animateParticle(particle)
   }
 }
 
 // Add smooth reveal animations for text elements
-document.addEventListener('DOMContentLoaded', () => {
-  const textElements = document.querySelectorAll('h1, h2, h3, p')
+document.addEventListener("DOMContentLoaded", () => {
+  const textElements = document.querySelectorAll("h1, h2, h3, p")
 
-  const textObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animation = 'fadeInUp 0.8s ease forwards'
-      }
-    })
-  }, { threshold: 0.1 })
+  const textObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = "fadeInUp 0.8s ease forwards"
+        }
+      })
+    },
+    { threshold: 0.1 },
+  )
 
-  textElements.forEach(el => {
-    el.style.opacity = '0'
-    el.style.transform = 'translateY(20px)'
+  textElements.forEach((el) => {
+    el.style.opacity = "0"
+    el.style.transform = "translateY(20px)"
     textObserver.observe(el)
   })
 })
 
-// Hero Slideshow Functionality
-document.addEventListener('DOMContentLoaded', () => {
-  const slides = document.querySelectorAll('.hero-slide')
-  const indicators = document.querySelectorAll('.slide-indicator')
-  const slideInfoItems = document.querySelectorAll('.slide-info-item')
-  let currentSlide = 0
-  let slideInterval
-
-  function showSlide(index) {
-    // Remove active class from all slides, indicators, and info items
-    slides.forEach(slide => slide.classList.remove('active'))
-    indicators.forEach(indicator => indicator.classList.remove('active'))
-    slideInfoItems.forEach(item => item.classList.remove('active'))
-
-    // Add active class to current slide, indicator, and info item
-    slides[index].classList.add('active')
-    indicators[index].classList.add('active')
-    slideInfoItems[index].classList.add('active')
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length
-    showSlide(currentSlide)
-  }
-
-  function startSlideshow() {
-    slideInterval = setInterval(nextSlide, 3000) // Change slide every 3 seconds
-  }
-
-  function stopSlideshow() {
-    clearInterval(slideInterval)
-  }
-
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length
-    showSlide(currentSlide)
-  }
-
-  // Add click event listeners to indicators
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => {
-      currentSlide = index
-      showSlide(currentSlide)
-      stopSlideshow()
-      startSlideshow() // Restart the timer
-    })
-  })
-
-  // Add click event listeners to navigation arrows
-  const prevBtn = document.getElementById('prevSlide')
-  const nextBtn = document.getElementById('nextSlide')
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      prevSlide()
-      stopSlideshow()
-      startSlideshow() // Restart the timer
-    })
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      nextSlide()
-      stopSlideshow()
-      startSlideshow() // Restart the timer
-    })
-  }
-
-  // Pause slideshow on hover
-  const heroSection = document.querySelector('.hero')
-  if (heroSection) {
-    heroSection.addEventListener('mouseenter', stopSlideshow)
-    heroSection.addEventListener('mouseleave', startSlideshow)
-  }
-
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      prevSlide()
-      stopSlideshow()
-      startSlideshow()
-    } else if (e.key === 'ArrowRight') {
-      nextSlide()
-      stopSlideshow()
-      startSlideshow()
-    }
-  })
-
-  // Start the slideshow
-  startSlideshow()
-})
-
 // Add magnetic effect to CTA buttons
-document.addEventListener('DOMContentLoaded', () => {
-  const ctaButtons = document.querySelectorAll('.cta-button')
+document.addEventListener("DOMContentLoaded", () => {
+  const ctaButtons = document.querySelectorAll(".cta-button")
 
-  ctaButtons.forEach(button => {
-    button.addEventListener('mousemove', function(e) {
+  ctaButtons.forEach((button) => {
+    button.addEventListener("mousemove", function (e) {
       const rect = this.getBoundingClientRect()
       const x = e.clientX - rect.left - rect.width / 2
       const y = e.clientY - rect.top - rect.height / 2
@@ -467,8 +469,8 @@ document.addEventListener('DOMContentLoaded', () => {
       this.style.transform = `translateY(-3px) scale(1.05) translate(${x * 0.1}px, ${y * 0.1}px)`
     })
 
-    button.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0) scale(1) translate(0, 0)'
+    button.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1) translate(0, 0)"
     })
   })
 })
