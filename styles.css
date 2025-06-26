@@ -978,6 +978,81 @@ h4 {
   transform: translateY(-2px);
 }
 
+/* Product Features Section */
+.product-features {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  padding: 40px;
+  background: linear-gradient(135deg, #f8f5f0, #ede7db);
+  border-radius: 15px;
+  border: 1px solid #e6d7c3;
+}
+
+.feature-item {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+  border: 1px solid #f0e6d2;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
+}
+
+.feature-item h4 {
+  color: #8b4513;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #cd853f;
+}
+
+.feature-item ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-item li {
+  color: #6b4423;
+  padding: 8px 0;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.feature-item li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #cd853f;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .product-features {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 25px;
+    margin-top: 40px;
+  }
+
+  .feature-item {
+    padding: 20px;
+  }
+
+  .feature-item h4 {
+    font-size: 1.2rem;
+  }
+}
+
 /* Manufacturing Excellence Section */
 .manufacturing {
   background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a3426 100%);
