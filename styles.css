@@ -285,7 +285,7 @@ h4 {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #2c1810 0%, #3d2317 100%);
-  padding: 120px 0 50px;
+  padding: 12px 100px 50px;
   position: relative;
   overflow: hidden;
 }
@@ -293,14 +293,13 @@ h4 {
 .hero-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
   align-items: center;
   max-width: 1200px;
   width: 100%;
 }
 
 .hero-text {
-  padding-right: 40px;
+  padding-right: 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -444,6 +443,7 @@ h4 {
 
 .hero-image-item {
   border-radius: 20px;
+  width: 500px;
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(139, 69, 19, 0.2);
   transition: all 0.4s ease;
