@@ -687,22 +687,28 @@ h4 {
 
 .about-details {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
   text-align: center;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   justify-content: center;
   padding: 0 20px;
 }
 
+.about-item:nth-child(3) {
+  grid-column: 1 / -1;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
 .about-item {
-  padding: 40px 50px;
+  padding: 45px 55px;
   background: #faf8f5;
   border-radius: 15px;
   border: 2px solid #f5f2ed;
   transition: all 0.3s ease;
-  min-height: 200px;
+  min-height: 220px;
 }
 
 .about-item:hover {
@@ -2038,14 +2044,14 @@ h4 {
   }
 
   .about-details {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    max-width: 600px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 700px;
   }
 
   .about-item:nth-child(3) {
-    grid-column: 1;
-    max-width: 100%;
+    grid-column: 1 / -1;
+    max-width: 400px;
   }
 
   .contact-content {
@@ -2109,6 +2115,17 @@ h4 {
   .products-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  .about-details {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    max-width: 500px;
+  }
+
+  .about-item:nth-child(3) {
+    grid-column: 1;
+    max-width: 100%;
   }
 }
 
