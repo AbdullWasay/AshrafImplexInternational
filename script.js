@@ -477,3 +477,198 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Continuous Suppliers Carousel - No manual controls needed
 // The carousel runs automatically via CSS animation
+
+// Inquiry Form Handling
+document.addEventListener("DOMContentLoaded", () => {
+  const inquiryForm = document.getElementById("inquiryForm")
+  const formStatus = document.getElementById("form-status")
+
+  if (inquiryForm) {
+    inquiryForm.addEventListener("submit", async function (e) {
+      e.preventDefault()
+
+      // Get form data
+      const formData = new FormData(this)
+      const submitBtn = this.querySelector(".submit-btn")
+      const originalBtnText = submitBtn.innerHTML
+
+      // Show loading state
+      submitBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+          <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+          </path>
+        </svg>
+        Sending...
+      `
+      submitBtn.disabled = true
+
+      try {
+        // Submit to Formspree
+        const response = await fetch(this.action, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        })
+
+        if (response.ok) {
+          // Success
+          formStatus.className = "form-status success"
+          formStatus.textContent = "Thank you! Your inquiry has been sent successfully. We'll get back to you within 24 hours."
+          this.reset() // Clear the form
+        } else {
+          throw new Error("Form submission failed")
+        }
+      } catch (error) {
+        // Fallback: Create mailto link with form data
+        const name = formData.get('name') || ''
+        const email = formData.get('email') || ''
+        const company = formData.get('company') || ''
+        const phone = formData.get('phone') || ''
+        const country = formData.get('country') || ''
+        const productInterest = formData.get('product_interest') || ''
+        const message = formData.get('message') || ''
+
+        const emailBody = `
+New Inquiry from Ashraf Impex Website
+
+Name: ${name}
+Email: ${email}
+Company: ${company}
+Phone: ${phone}
+Country: ${country}
+Product Interest: ${productInterest}
+
+Message:
+${message}
+
+---
+This inquiry was submitted through the website contact form.
+        `.trim()
+
+        const mailtoLink = `mailto:abdul.wasay308@gmail.com?subject=New Inquiry from Ashraf Impex Website&body=${encodeURIComponent(emailBody)}`
+
+        // Show fallback message with mailto option
+        formStatus.className = "form-status error"
+        formStatus.innerHTML = `
+          <p>There was an issue with the automatic form submission.</p>
+          <p><strong>Alternative:</strong> <a href="${mailtoLink}" style="color: #8b4513; text-decoration: underline;">Click here to send your inquiry via email</a></p>
+          <p>Or contact us directly at: <strong>abdul.wasay308@gmail.com</strong></p>
+        `
+      } finally {
+        // Reset button
+        submitBtn.innerHTML = originalBtnText
+        submitBtn.disabled = false
+
+        // Scroll to status message
+        formStatus.scrollIntoView({ behavior: "smooth", block: "center" })
+
+        // Hide status message after 10 seconds
+        setTimeout(() => {
+          formStatus.style.display = "none"
+        }, 10000)
+      }
+    })
+  }
+
+  // Form validation enhancements
+  const formInputs = document.querySelectorAll("#inquiryForm input, #inquiryForm select, #inquiryForm textarea")
+
+  formInputs.forEach(input => {
+    // Add real-time validation feedback
+    input.addEventListener("blur", function() {
+      if (this.hasAttribute("required") && !this.value.trim()) {
+        this.style.borderColor = "#dc3545"
+      } else if (this.type === "email" && this.value && !isValidEmail(this.value)) {
+        this.style.borderColor = "#dc3545"
+      } else {
+        this.style.borderColor = "#e8ddd4"
+      }
+    })
+
+    input.addEventListener("focus", function() {
+      this.style.borderColor = "#8b4513"
+    })
+  })
+})
+
+// Email validation helper
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+// Send via Email function (mailto fallback)
+function sendViaEmail() {
+  const form = document.getElementById('inquiryForm')
+  const formData = new FormData(form)
+
+  // Validate required fields
+  const name = formData.get('name') || ''
+  const email = formData.get('email') || ''
+  const message = formData.get('message') || ''
+
+  if (!name.trim()) {
+    alert('Please enter your name')
+    document.getElementById('name').focus()
+    return
+  }
+
+  if (!email.trim()) {
+    alert('Please enter your email address')
+    document.getElementById('email').focus()
+    return
+  }
+
+  if (!isValidEmail(email)) {
+    alert('Please enter a valid email address')
+    document.getElementById('email').focus()
+    return
+  }
+
+  if (!message.trim()) {
+    alert('Please enter your message')
+    document.getElementById('message').focus()
+    return
+  }
+
+  // Get all form data
+  const company = formData.get('company') || ''
+  const phone = formData.get('phone') || ''
+  const country = formData.get('country') || ''
+  const productInterest = formData.get('product_interest') || ''
+
+  // Create email body
+  const emailBody = `
+New Inquiry from Ashraf Impex Website
+
+Name: ${name}
+Email: ${email}
+Company: ${company}
+Phone: ${phone}
+Country: ${country}
+Product Interest: ${productInterest}
+
+Message:
+${message}
+
+---
+This inquiry was submitted through the website contact form.
+  `.trim()
+
+  // Create mailto link
+  const subject = 'New Inquiry from Ashraf Impex Website'
+  const mailtoLink = `mailto:abdul.wasay308@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`
+
+  // Open email client
+  window.location.href = mailtoLink
+
+  // Show success message
+  const formStatus = document.getElementById('form-status')
+  formStatus.className = 'form-status success'
+  formStatus.textContent = 'Your email client should open now. Please send the email to complete your inquiry.'
+  formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}

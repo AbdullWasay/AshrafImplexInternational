@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You - Ashraf Impex International</title>
+    <meta
+      name="description"
+      content="Thank you for your inquiry. We'll get back to you within 24 hours."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .thank-you-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #faf8f5 0%, #f5f1eb 100%);
+        padding: 20px;
+      }
+      
+      .thank-you-card {
+        background: white;
+        padding: 60px 40px;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        border: 1px solid #e8ddd4;
+      }
+      
+      .thank-you-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #8b4513, #a0522d);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      
+      .thank-you-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        color: #8b4513;
+        margin-bottom: 20px;
+      }
+      
+      .thank-you-message {
+        font-size: 1.2rem;
+        color: #6b4423;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+      
+      .thank-you-details {
+        background: #faf8f5;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        border-left: 4px solid #8b4513;
+      }
+      
+      .thank-you-details h3 {
+        color: #8b4513;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+      }
+      
+      .thank-you-details ul {
+        list-style: none;
+        text-align: left;
+      }
+      
+      .thank-you-details li {
+        margin-bottom: 8px;
+        color: #6b4423;
+        position: relative;
+        padding-left: 20px;
+      }
+      
+      .thank-you-details li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #8b4513;
+        font-weight: bold;
+      }
+      
+      .back-to-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(135deg, #8b4513, #a0522d);
+        color: white;
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .back-to-home:hover {
+        background: linear-gradient(135deg, #a0522d, #8b4513);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+      }
+      
+      @media (max-width: 768px) {
+        .thank-you-card {
+          padding: 40px 25px;
+        }
+        
+        .thank-you-title {
+          font-size: 2rem;
+        }
+        
+        .thank-you-message {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="thank-you-container">
+      <div class="thank-you-card">
+        <div class="thank-you-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        
+        <h1 class="thank-you-title">Thank You!</h1>
+        
+        <p class="thank-you-message">
+          Your inquiry has been successfully submitted. We appreciate your interest in Ashraf Impex International's premium leather products and services.
+        </p>
+        
+        <div class="thank-you-details">
+          <h3>What happens next?</h3>
+          <ul>
+            <li>We'll review your inquiry within 2-4 hours</li>
+            <li>Our team will prepare a detailed response</li>
+            <li>You'll receive a reply within 24 hours</li>
+            <li>We'll schedule a call if needed to discuss your requirements</li>
+          </ul>
+        </div>
+        
+        <a href="index.html" class="back-to-home">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to Home
+        </a>
+      </div>
+    </div>
+    
+    <script>
+      // Auto-redirect to home page after 30 seconds
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 30000);
+    </script>
+  </body>
+</html>
